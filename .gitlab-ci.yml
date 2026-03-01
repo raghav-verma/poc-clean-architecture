@@ -1,0 +1,27 @@
+image: ghcr.io/cirruslabs/flutter
+stages:
+  - lints
+  - tests
+  - build
+
+unit tests:
+  stage: tests
+  script:
+    - export PATH=$PATH:/usr/local/bin
+    - flutter test --coverage ./lib
+    - lcov -r coverage/lcov.info '*/__test*__/*' -o coverage/lcov_cleaned.info
+    - genhtml coverage/lcov_cleaned.info --output=coverage
+  tags:
+    - flutter
+  artifacts:
+    paths:
+      - coverage
+android:
+  stage: build
+  script:
+    - flutter run --release
+  artifacts:
+    paths:
+      - build/artifacts/
+  tags:
+    - flutter
