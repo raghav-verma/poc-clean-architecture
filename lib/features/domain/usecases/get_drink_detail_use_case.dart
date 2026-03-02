@@ -7,7 +7,7 @@ import 'package:flutter_clean_arch_template/features/domain/repositories/reposit
 
 class GetDrinkDetailUseCase
     extends UseCase<DrinkListingEntity, GetDrinkDetailParams> {
-  final Repository _repository;
+  final DrinkRepository _repository;
 
   GetDrinkDetailUseCase(this._repository);
 

@@ -80,12 +80,12 @@ class MySharedPref {
     _pref.setBool(registrationFlag, flag);
   }
 
-  Future<String> getUserRole() async {
+  String getUserRole() {
     return _pref.getString(userRole) ?? "";
   }
 
-  Future<void> setUserRole(String role) async {
-    await _pref.setString(userRole, role);
+  void setUserRole(String role) {
+    _pref.setString(userRole, role);
   }
 
   void saveDrinkListingCache(String jsonValue) {

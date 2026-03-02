@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_clean_arch_template/features/domain/entities/drink_listing_entity.dart';
 
 part 'drink_listing_response_model.g.dart';
 
 List<DrinkModel>? _drinksFromJson(Object? rawValue) {
   if (rawValue is! List) {
-    // CocktailDB returns {"drinks":"no data found"} for empty/no-match queries.
+
     return null;
   }
 
@@ -42,6 +43,16 @@ class DrinkModel {
   String? strDrink;
   String? strDrinkThumb;
   String? strInstructions;
+
+  /// Converts this API model into a domain entity.
+  DrinkListingEntity toEntity() {
+    return DrinkListingEntity(
+      id: idDrink,
+      name: strDrink,
+      url: strDrinkThumb,
+      description: strInstructions,
+    );
+  }
 
   factory DrinkModel.fromJson(Map<String, dynamic> json) =>
       _$DrinkModelFromJson(json);

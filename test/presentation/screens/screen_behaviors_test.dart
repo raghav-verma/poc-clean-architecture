@@ -101,7 +101,7 @@ class _AlwaysFailDrinkDetailUseCase extends GetDrinkDetailUseCase {
   }
 }
 
-class _NoopRepository implements Repository {
+class _NoopRepository implements DrinkRepository {
   @override
   Future<Either<Failure, DrinkListingEntity>> getDrinkDetail({
     required String drinkId,

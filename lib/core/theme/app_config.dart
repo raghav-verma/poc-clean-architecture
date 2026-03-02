@@ -3,47 +3,34 @@ import 'dart:ui';
 import 'package:flutter_clean_arch_template/core/theme/data/custom_theme_data.dart';
 import 'package:flutter/material.dart';
 
+/// App-level theming configuration.
+///
+/// Managed as a lazy singleton via `get_it` in [setupLocator].
 class AppConfig {
-  AppConfig? _instance;
   bool isDarkMode = false;
-  Future<AppConfig> getInstance() async {
-    _instance = AppConfig();
-    return _instance!;
-  }
 
-  static ThemeMode themeMode = ThemeMode.system;
+  ThemeMode themeMode = ThemeMode.system;
 
   void toggleTheme() {
-    if ((themeMode == ThemeMode.system)) {
-      //first time handle for device default theme
-      if (isSystemDarkMode()) {
-        themeMode = ThemeMode.light;
-      } else {
-        themeMode = ThemeMode.dark;
-      }
+    if (themeMode == ThemeMode.system) {
+      // First toggle: respect the OS default and switch to its opposite.
+      themeMode = isSystemDarkMode() ? ThemeMode.light : ThemeMode.dark;
     } else {
-      ////handle app toggle
-      if (themeMode == ThemeMode.dark) {
-        themeMode = ThemeMode.light;
-      } else {
-        themeMode = ThemeMode.dark;
-      }
+      themeMode =
+          themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     }
+    isDarkMode = themeMode == ThemeMode.dark ||
+        (themeMode == ThemeMode.system && isSystemDarkMode());
   }
 
   bool isSystemDarkMode() {
-    final brightness = PlatformDispatcher.instance.platformBrightness;
-    return brightness == Brightness.dark;
+    return PlatformDispatcher.instance.platformBrightness == Brightness.dark;
   }
 
   ThemeData get theme {
     switch (themeMode) {
       case ThemeMode.system:
-        if (isSystemDarkMode()) {
-          return darkThemeData;
-        } else {
-          return lightThemeData;
-        }
+        return isSystemDarkMode() ? darkThemeData : lightThemeData;
       case ThemeMode.dark:
         return darkThemeData;
       case ThemeMode.light:

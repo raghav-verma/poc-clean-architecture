@@ -33,11 +33,11 @@ class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
     : super(parent, parentInvocation);
 }
 
-/// A class which mocks [Repository].
+/// A class which mocks [DrinkRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockRepository extends _i1.Mock implements _i3.Repository {
-  MockRepository() {
+class MockDrinkRepository extends _i1.Mock implements _i3.DrinkRepository {
+  MockDrinkRepository() {
     _i1.throwOnMissingStub(this);
   }
 

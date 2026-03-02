@@ -7,7 +7,7 @@ import 'package:flutter_clean_arch_template/features/domain/repositories/reposit
 
 class SearchDrinkUseCase
     extends UseCase<List<DrinkListingEntity>, SearchDrinkParams> {
-  final Repository _repository;
+  final DrinkRepository _repository;
 
   SearchDrinkUseCase(this._repository);
 

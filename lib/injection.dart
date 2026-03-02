@@ -50,7 +50,7 @@ Future setupLocator() async {
   );
 
   // Repository
-  locator.registerLazySingleton<Repository>(
+  locator.registerLazySingleton<DrinkRepository>(
     () => RepositoryImplementation(
       localDataSource: locator(),
       remoteDataSource: locator(),

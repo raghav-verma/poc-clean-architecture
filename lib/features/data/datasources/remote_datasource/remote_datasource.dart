@@ -22,14 +22,6 @@ class RemoteDatasourceImplementation extends RemoteDatasource {
 
   RemoteDatasourceImplementation({required this.client});
 
-  void _processDio(err) {
-    if (err is DioException) {
-      throw ServerException(message: err.getErrorFromDio());
-    } else {
-      throw ServerException(message: Constants.errorUnknown);
-    }
-  }
-
   @override
   Future<DrinkListingResponseModel> searchDrink({
     required String searchText,
@@ -38,9 +30,8 @@ class RemoteDatasourceImplementation extends RemoteDatasource {
       return await client.searchDrink(searchText);
     } on DioException catch (e) {
       throw ServerException(message: e.getErrorFromDio());
-    } catch (e) {
-      _processDio(e);
-      rethrow;
+    } catch (_) {
+      throw ServerException(message: Constants.errorUnknown);
     }
   }
 
@@ -52,9 +43,8 @@ class RemoteDatasourceImplementation extends RemoteDatasource {
       return await client.lookupDrink(drinkId);
     } on DioException catch (e) {
       throw ServerException(message: e.getErrorFromDio());
-    } catch (e) {
-      _processDio(e);
-      rethrow;
+    } catch (_) {
+      throw ServerException(message: Constants.errorUnknown);
     }
   }
 }

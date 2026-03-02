@@ -5,6 +5,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart' as path_provider_app;
+import 'package:flutter_clean_arch_template/core/theme/app_config.dart';
+import 'package:flutter_clean_arch_template/core/theme/data/custom_theme_data.dart';
 import 'package:flutter_clean_arch_template/core/utils/app_colors.dart';
 import 'package:flutter_clean_arch_template/core/utils/constants.dart';
 import 'package:flutter_clean_arch_template/core/utils/routes.dart';
@@ -72,6 +74,9 @@ class _MyAppState extends State<MyApp> {
       builder: EasyLoading.init(),
       supportedLocales: const [Locale('en')],
       debugShowCheckedModeBanner: false,
+      theme: lightThemeData,
+      darkTheme: darkThemeData,
+      themeMode: locator<AppConfig>().themeMode,
       home: _buildDrinkListingScreen(),
       routes: _registerRoutes(),
     );

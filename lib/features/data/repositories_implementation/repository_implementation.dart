@@ -9,7 +9,7 @@ import 'package:flutter_clean_arch_template/features/data/model/responses/drink_
 import 'package:flutter_clean_arch_template/features/domain/entities/drink_listing_entity.dart';
 import 'package:flutter_clean_arch_template/features/domain/repositories/repository.dart';
 
-class RepositoryImplementation extends Repository {
+class RepositoryImplementation extends DrinkRepository {
   final LocalDatasource localDataSource;
   final RemoteDatasource remoteDataSource;
   final NetworkInfo networkInfo;
@@ -35,9 +35,9 @@ class RepositoryImplementation extends Repository {
           } on CacheException {
             // Keep returning fresh remote data even if local cache fails.
           }
-          return Right(_convertDrinkList(result));
         }
-        return Left(ServerFailure(message: Constants.errorNoDataFound));
+        // No-match responses are valid empty results, not failures.
+        return Right(_convertDrinkList(result));
       } else {
         final cachedList = localDataSource.getListing();
         if (cachedList.isNotEmpty) {
@@ -77,21 +77,9 @@ class RepositoryImplementation extends Repository {
   }
 
   List<DrinkListingEntity> _convertDrinkList(DrinkListingResponseModel model) {
-    final List<DrinkListingEntity> drinkList = List.empty(growable: true);
-
-    if (model.drinks != null && model.drinks!.isNotEmpty) {
-      for (var i in model.drinks!) {
-        drinkList.add(
-          DrinkListingEntity(
-            id: i.idDrink,
-            name: i.strDrink,
-            url: i.strDrinkThumb,
-            description: i.strInstructions,
-          ),
-        );
-      }
+    if (model.drinks == null || model.drinks!.isEmpty) {
+      return [];
     }
-
-    return drinkList;
+    return model.drinks!.map((drink) => drink.toEntity()).toList();
   }
 }

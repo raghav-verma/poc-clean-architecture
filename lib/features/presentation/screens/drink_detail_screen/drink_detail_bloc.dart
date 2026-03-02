@@ -21,7 +21,7 @@ class DrinkDetailBloc extends Bloc<DrinkDetailEvent, DrinkDetailState> {
           GetDrinkDetailParams(drinkId: event.drinkId),
         );
         data.fold(
-          (failure) async {
+          (failure) {
             if (failure is CacheFailure) {
               emit(DrinkDetailErrorState(message: failure.message));
             } else if (failure is ServerFailure) {
@@ -32,7 +32,7 @@ class DrinkDetailBloc extends Bloc<DrinkDetailEvent, DrinkDetailState> {
               );
             }
           },
-          (drink) async {
+          (drink) {
             emit(DrinkDetailLoadedState(drink: drink));
           },
         );

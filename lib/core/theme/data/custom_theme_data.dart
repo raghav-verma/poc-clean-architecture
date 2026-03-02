@@ -88,7 +88,7 @@ class LightCustomThemeData implements CustomThemeData {
   //Extras
   @override
   ThemeExtension<CustomThemeData> copyWith({Color? success, Color? failure}) {
-    return DarkCustomThemeData();
+    return LightCustomThemeData();
   }
 
   @override
@@ -97,7 +97,7 @@ class LightCustomThemeData implements CustomThemeData {
     double t,
   ) {
     if (other is! CustomThemeData) return this;
-    return DarkCustomThemeData();
+    return LightCustomThemeData();
   }
 
   @override

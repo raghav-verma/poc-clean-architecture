@@ -14,27 +14,27 @@ import 'search_drink_use_case_test.mocks.dart';
 ///
 /// WHY THIS TEST EXISTS:
 /// - Use cases are the core business logic — they MUST be tested in isolation.
-/// - The only dependency is the Repository interface, which we mock.
+/// - The only dependency is the DrinkRepository interface, which we mock.
 /// - We verify that the use case correctly delegates to the repository and
 ///   returns the result without modifying it.
 ///
 /// PATTERN FOR NEW USE CASES:
-/// 1. Mock the Repository (already generated below).
+/// 1. Mock the DrinkRepository (already generated below).
 /// 2. Write a test for the success path (Right).
 /// 3. Write a test for the failure path (Left).
 /// ---------------------------------------------------------------------------
 
-@GenerateMocks([Repository])
+@GenerateMocks([DrinkRepository])
 void main() {
   late SearchDrinkUseCase useCase;
-  late MockRepository mockRepository;
+  late MockDrinkRepository mockRepository;
 
   setUp(() {
-    mockRepository = MockRepository();
+    mockRepository = MockDrinkRepository();
     useCase = SearchDrinkUseCase(mockRepository);
   });
 
-  // ---- Test data ----
+  // Test data
   final tSearchText = 'margarita';
   final tDrinkList = [
     DrinkListingEntity(

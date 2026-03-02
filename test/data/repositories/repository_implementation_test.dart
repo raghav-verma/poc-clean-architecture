@@ -101,17 +101,16 @@ void main() {
         },
       );
 
-      test('returns ServerFailure when response has null drinks', () async {
+      test('returns empty list when response has null drinks', () async {
         when(
           mockRemoteDatasource.searchDrink(searchText: tSearchText),
         ).thenAnswer((_) async => DrinkListingResponseModel(drinks: null));
 
         final result = await repository.searchDrink(searchText: tSearchText);
 
-        expect(
-          result,
-          Left(ServerFailure(message: Constants.errorNoDataFound)),
-        );
+        result.fold((_) => fail('Expected Right with empty list'), (drinks) {
+          expect(drinks, isEmpty);
+        });
       });
     });
 
