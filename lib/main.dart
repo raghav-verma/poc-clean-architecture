@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:path_provider/path_provider.dart' as path_provider_app;
 import 'package:flutter_clean_arch_template/core/theme/app_config.dart';
 import 'package:flutter_clean_arch_template/core/theme/data/custom_theme_data.dart';
 import 'package:flutter_clean_arch_template/core/utils/app_colors.dart';
@@ -22,25 +19,18 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-  ]); // To turn off landscape mode
+  ]);
 
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
-
       statusBarColor: AppColors.transparent,
-
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
 
-  /// Initializing Hive
-  final directory = await path_provider_app.getApplicationDocumentsDirectory();
-  Hive.init(directory.path);
-
   await setupLocator();
 
-  await initializeDateFormatting();
   runApp(const MyApp());
 }
 

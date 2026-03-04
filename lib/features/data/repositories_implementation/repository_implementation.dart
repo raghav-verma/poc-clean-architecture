@@ -42,7 +42,15 @@ class RepositoryImplementation extends DrinkRepository {
         final cachedList = localDataSource.getListing();
         if (cachedList.isNotEmpty) {
           final cachedResponse = DrinkListingResponseModel(drinks: cachedList);
-          return Right(_convertDrinkList(cachedResponse));
+          final allDrinks = _convertDrinkList(cachedResponse);
+          final lowerSearch = searchText.toLowerCase();
+          final filtered = allDrinks
+              .where(
+                (drink) =>
+                    drink.name?.toLowerCase().contains(lowerSearch) == true,
+              )
+              .toList();
+          return Right(filtered);
         }
         return Left(ServerFailure(message: Constants.errorNoInternet));
       }

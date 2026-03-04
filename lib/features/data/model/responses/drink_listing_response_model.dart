@@ -15,7 +15,8 @@ List<DrinkModel>? _drinksFromJson(Object? rawValue) {
       .toList(growable: false);
 }
 
-Object? _drinksToJson(List<DrinkModel>? drinks) => drinks;
+List<Map<String, dynamic>>? _drinksToJson(List<DrinkModel>? drinks) =>
+    drinks?.map((drink) => drink.toJson()).toList(growable: false);
 
 @JsonSerializable()
 class DrinkListingResponseModel {
@@ -39,10 +40,10 @@ class DrinkModel {
     this.strInstructions,
   });
 
-  String idDrink;
-  String? strDrink;
-  String? strDrinkThumb;
-  String? strInstructions;
+  final String idDrink;
+  final String? strDrink;
+  final String? strDrinkThumb;
+  final String? strInstructions;
 
   /// Converts this API model into a domain entity.
   DrinkListingEntity toEntity() {

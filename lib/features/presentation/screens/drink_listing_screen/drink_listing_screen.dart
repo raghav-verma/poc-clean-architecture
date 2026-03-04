@@ -161,6 +161,8 @@ class _DrinkCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -179,19 +181,19 @@ class _DrinkCard extends StatelessWidget {
                     ? Image.network(
                         drink.url!,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const ColoredBox(
-                          color: Color(0xFF1E1E1E),
+                        errorBuilder: (_, __, ___) => ColoredBox(
+                          color: colorScheme.surfaceContainerHighest,
                           child: Icon(
                             Icons.local_bar_outlined,
-                            color: Colors.white24,
+                            color: colorScheme.onSurface.withValues(alpha: 0.15),
                           ),
                         ),
                       )
-                    : const ColoredBox(
-                        color: Color(0xFF1E1E1E),
+                    : ColoredBox(
+                        color: colorScheme.surfaceContainerHighest,
                         child: Icon(
                           Icons.local_bar_outlined,
-                          color: Colors.white24,
+                          color: colorScheme.onSurface.withValues(alpha: 0.15),
                         ),
                       ),
               ),
@@ -224,7 +226,7 @@ class _DrinkCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.grey[600],
+                          color: colorScheme.onSurface.withValues(alpha: 0.6),
                           height: 1.4,
                         ),
                       ),
@@ -233,9 +235,12 @@ class _DrinkCard extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(right: 12),
-              child: Icon(Icons.chevron_right, color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Icon(
+                Icons.chevron_right,
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
             ),
           ],
         ),

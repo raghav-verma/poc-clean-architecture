@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_clean_arch_template/core/error/failures.dart';
-import 'package:flutter_clean_arch_template/core/utils/constants.dart';
 import 'package:flutter_clean_arch_template/features/domain/entities/drink_listing_entity.dart';
 import 'package:flutter_clean_arch_template/features/domain/usecases/search_drink_use_case.dart';
 import 'package:flutter_clean_arch_template/features/presentation/screens/drink_listing_screen/drink_listing_bloc.dart';
@@ -111,11 +110,11 @@ void main() {
     );
 
     blocTest<DrinkListingBloc, DrinkListingState>(
-      'maps unknown failures to generic no-internet message',
+      'maps unknown failures using their message property',
       build: () {
         when(
           mockSearchDrinkUseCase.call(any),
-        ).thenAnswer((_) async => Left(_UnknownFailure()));
+        ).thenAnswer((_) async => Left(const _UnknownFailure()));
         return DrinkListingBloc(searchDrinkUseCase: mockSearchDrinkUseCase);
       },
       act: (bloc) => bloc.add(const SearchDrinkEvent(searchText: tSearchText)),
@@ -124,7 +123,7 @@ void main() {
         isA<DrinkErrorState>().having(
           (s) => s.message,
           'error message',
-          Constants.errorNoInternet,
+          'Unknown',
         ),
       ],
     );
@@ -168,4 +167,6 @@ void main() {
   });
 }
 
-class _UnknownFailure extends Failure {}
+class _UnknownFailure extends Failure {
+  const _UnknownFailure() : super(message: 'Unknown');
+}

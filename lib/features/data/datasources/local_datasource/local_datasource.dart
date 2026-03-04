@@ -13,7 +13,7 @@ abstract class LocalDatasource {
   void saveListing(List<DrinkModel> list);
 }
 
-/// Hive/SharedPreferences-backed [LocalDatasource] implementation.
+/// SharedPreferences-backed [LocalDatasource] implementation.
 class LocalDatasourceImplementation extends LocalDatasource {
   final MySharedPref mySharedPref;
 

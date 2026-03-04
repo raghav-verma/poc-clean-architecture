@@ -10,6 +10,9 @@ class DrinkDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocBuilder<DrinkDetailBloc, DrinkDetailState>(
       builder: (context, state) {
         final displayDrink = state is DrinkDetailLoadedState
@@ -17,13 +20,13 @@ class DrinkDetailScreen extends StatelessWidget {
             : drink;
 
         return Scaffold(
-          backgroundColor: const Color(0xFF121212),
+          backgroundColor: colorScheme.surface,
           body: CustomScrollView(
             slivers: [
               SliverAppBar(
                 expandedHeight: 320,
                 pinned: true,
-                backgroundColor: const Color(0xFF1E1E1E),
+                backgroundColor: colorScheme.surfaceContainerHighest,
                 leading: GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
                   child: Container(
@@ -46,13 +49,13 @@ class DrinkDetailScreen extends StatelessWidget {
                                 displayDrink.url!,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) =>
-                                    _buildPlaceholder(),
+                                    _buildPlaceholder(colorScheme),
                                 loadingBuilder: (context, child, progress) {
                                   if (progress == null) return child;
-                                  return _buildPlaceholder();
+                                  return _buildPlaceholder(colorScheme);
                                 },
                               )
-                            : _buildPlaceholder(),
+                            : _buildPlaceholder(colorScheme),
                         DecoratedBox(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -60,7 +63,7 @@ class DrinkDetailScreen extends StatelessWidget {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                const Color(0xFF121212),
+                                colorScheme.surface,
                               ],
                               stops: const [0.5, 1.0],
                             ),
@@ -76,11 +79,11 @@ class DrinkDetailScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(24, 8, 24, 40),
                   child: state is DrinkDetailLoadingState
-                      ? const Padding(
-                          padding: EdgeInsets.only(top: 40),
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 40),
                           child: Center(
                             child: CircularProgressIndicator(
-                              color: Colors.deepPurpleAccent,
+                              color: colorScheme.primary,
                             ),
                           ),
                         )
@@ -103,11 +106,13 @@ class DrinkDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(ColorScheme colorScheme) {
     return Container(
-      color: const Color(0xFF1E1E1E),
-      child: const Center(
-        child: Icon(Icons.local_bar_outlined, color: Colors.white24, size: 80),
+      color: colorScheme.surfaceContainerHighest,
+      child: Icon(
+        Icons.local_bar_outlined,
+        color: colorScheme.onSurface.withValues(alpha: 0.15),
+        size: 80,
       ),
     );
   }
@@ -120,30 +125,30 @@ class _DetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (drink.name != null)
           Text(
             drink.name!,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
+            style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
               letterSpacing: 0.3,
             ),
           ),
         const SizedBox(height: 28),
-        const Divider(color: Color(0xFF2C2C2C)),
+        Divider(color: colorScheme.outlineVariant),
         const SizedBox(height: 20),
 
         // Description
         if (drink.description != null && drink.description!.isNotEmpty) ...[
-          const Text(
+          Text(
             'ABOUT',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 13,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
               fontWeight: FontWeight.w600,
               letterSpacing: 1.2,
             ),
@@ -151,11 +156,7 @@ class _DetailBody extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             drink.description!,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              height: 1.6,
-            ),
+            style: theme.textTheme.bodyLarge?.copyWith(height: 1.6),
           ),
         ] else
           const _EmptyDescription(),
@@ -171,21 +172,23 @@ class _ErrorBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.red.withValues(alpha: 0.1),
+        color: colorScheme.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red.withValues(alpha: 0.4)),
+        border: Border.all(color: colorScheme.error.withValues(alpha: 0.4)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
+          Icon(Icons.error_outline, color: colorScheme.error, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Text(
               message,
-              style: const TextStyle(color: Colors.redAccent, fontSize: 14),
+              style: TextStyle(color: colorScheme.error, fontSize: 14),
             ),
           ),
         ],
@@ -199,20 +202,29 @@ class _EmptyDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E),
+        color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF2C2C2C)),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.info_outline, color: Colors.white38, size: 18),
-          SizedBox(width: 10),
+          Icon(
+            Icons.info_outline,
+            color: colorScheme.onSurface.withValues(alpha: 0.38),
+            size: 18,
+          ),
+          const SizedBox(width: 10),
           Text(
             'No description available.',
-            style: TextStyle(color: Colors.white38, fontSize: 14),
+            style: TextStyle(
+              color: colorScheme.onSurface.withValues(alpha: 0.38),
+              fontSize: 14,
+            ),
           ),
         ],
       ),

@@ -1,5 +1,5 @@
 name: flutter_clean_arch_template
-description: A Flutter starter template following Clean Architecture with BLoC, get_it, Hive, Dio and Retrofit.
+description: A Flutter starter template following Clean Architecture with BLoC, get_it, Dio and Retrofit.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,10 +34,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-  # Provides internationalization and localization facilities
-  intl: ^0.20.2
-  path_provider: ^2.1.5
-
   # Service Locator
   get_it: ^9.2.1
   # Bloc for state management
@@ -58,9 +54,6 @@ dependencies:
   shared_preferences: ^2.5.2
   # Annotation
   json_annotation: ^4.11.0
-
-  # Local Data Base
-  hive_flutter: ^1.1.0
 
   # Get App Info
   #package_info_plus: ^1.4.3+1

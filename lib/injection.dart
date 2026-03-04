@@ -24,53 +24,8 @@ Future setupLocator() async {
     return;
   }
 
-  // BLoCs
-
-  locator.registerFactory(
-    () => DrinkListingBloc(searchDrinkUseCase: locator()),
-  );
-
-  locator.registerFactory(
-    () => DrinkDetailBloc(getDrinkDetailUseCase: locator()),
-  );
-
-  // UseCases
-
-  locator.registerLazySingleton(() => SearchDrinkUseCase(locator()));
-  locator.registerLazySingleton(() => GetDrinkDetailUseCase(locator()));
-
-  //DataSources
-
-  locator.registerLazySingleton<LocalDatasource>(
-    () => LocalDatasourceImplementation(mySharedPref: locator()),
-  );
-
-  locator.registerLazySingleton<RemoteDatasource>(
-    () => RemoteDatasourceImplementation(client: locator()),
-  );
-
-  // Repository
-  locator.registerLazySingleton<DrinkRepository>(
-    () => RepositoryImplementation(
-      localDataSource: locator(),
-      remoteDataSource: locator(),
-      networkInfo: locator(),
-    ),
-  );
-
-  // Core Services
-
-  locator.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImplementation(locator()),
-  );
-
-  locator.registerLazySingleton<MySharedPref>(() => MySharedPref(locator()));
-
-  locator.registerLazySingleton<AppConfig>(() => AppConfig());
-
   // External Dependencies
 
-  // Dio
   final dio = Dio(BaseOptions(baseUrl: Constants.baseUrl));
   if (kDebugMode) {
     dio.interceptors.add(
@@ -90,4 +45,49 @@ Future setupLocator() async {
   locator.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   locator.registerLazySingleton(() => RestClient(dio));
   locator.registerLazySingleton(() => InternetConnectionChecker.instance);
+
+  // Core Services
+
+  locator.registerLazySingleton<NetworkInfo>(
+    () => NetworkInfoImplementation(locator()),
+  );
+
+  locator.registerLazySingleton<MySharedPref>(() => MySharedPref(locator()));
+
+  locator.registerLazySingleton<AppConfig>(() => AppConfig());
+
+  // Data Sources
+
+  locator.registerLazySingleton<LocalDatasource>(
+    () => LocalDatasourceImplementation(mySharedPref: locator()),
+  );
+
+  locator.registerLazySingleton<RemoteDatasource>(
+    () => RemoteDatasourceImplementation(client: locator()),
+  );
+
+  // Repository
+
+  locator.registerLazySingleton<DrinkRepository>(
+    () => RepositoryImplementation(
+      localDataSource: locator(),
+      remoteDataSource: locator(),
+      networkInfo: locator(),
+    ),
+  );
+
+  // Use Cases
+
+  locator.registerLazySingleton(() => SearchDrinkUseCase(locator()));
+  locator.registerLazySingleton(() => GetDrinkDetailUseCase(locator()));
+
+  // BLoCs
+
+  locator.registerFactory(
+    () => DrinkListingBloc(searchDrinkUseCase: locator()),
+  );
+
+  locator.registerFactory(
+    () => DrinkDetailBloc(getDrinkDetailUseCase: locator()),
+  );
 }
